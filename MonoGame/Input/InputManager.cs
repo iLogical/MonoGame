@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Config;
+using MonoGame.Config.Configurations;
+using Newtonsoft.Json;
 namespace MonoGame.Input
 {
 
     public class InputManager : IInputManager
     {
         private readonly KeyboardInput _keyboardInput;
-        private readonly ImmutableDictionary<HashSet<Keys>, InputActionType> _mappingActions;
+        private readonly IDictionary<HashSet<Keys>, InputActionType> _mappingActions;
         private readonly IDictionary<InputActionType, InputAction> _actions;
 
-        public InputManager()
+        public InputManager(ConfigurationManager configurationManage)
         {
-            _mappingActions = LoadActionMappings();
+            _mappingActions = LoadActionMappings(configurationManage);
             _actions = new Dictionary<InputActionType, InputAction>();
             _keyboardInput = new KeyboardInput();
 
@@ -38,13 +43,20 @@ namespace MonoGame.Input
                 }
             }
         }
-
-        private static ImmutableDictionary<HashSet<Keys>, InputActionType> LoadActionMappings()
-        {
-            var builder = ImmutableDictionary.CreateBuilder<HashSet<Keys>, InputActionType>();
-            builder.Add(new HashSet<Keys>(new[] {Keys.Escape}), InputActionType.Exit);
-            builder.Add(new HashSet<Keys>(new[] {Keys.LeftControl, Keys.LeftAlt, Keys.D}), InputActionType.ToggleDebug);
-            return builder.ToImmutable();
+        private static IDictionary<HashSet<Keys>, InputActionType> LoadActionMappings(ConfigurationManager configurationManager)
+        {            
+            var builder = new Dictionary<HashSet<Keys>, InputActionType>();
+            var loadedBindings = configurationManager.Load<KeyBindingConfiguration>("KeyBindings");
+            foreach (var (inputActionType, keyBinding) in loadedBindings.Actions)
+            {
+                var primaryBindings = keyBinding.Primary.ToHashSet();
+                if(primaryBindings.Any())
+                    builder.Add(primaryBindings, inputActionType);
+                var secondaryBindings = keyBinding.Secondary.ToHashSet();
+                if(secondaryBindings.Any())
+                    builder.Add(secondaryBindings, inputActionType);
+            }
+            return builder;
         }
         public void OnInputAction(InputActionType inputActionType, Action inputAction)
         {

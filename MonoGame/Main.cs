@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Config;
 using MonoGame.Input;
 using MonoGame.Rendering;
 
@@ -12,7 +13,7 @@ namespace MonoGame
         public Main()
         {
             _graphicsDevice = new GraphicsDevice(this);
-            _inputManager = new InputManager();
+            _inputManager = new InputManager(new ConfigurationManager());
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }

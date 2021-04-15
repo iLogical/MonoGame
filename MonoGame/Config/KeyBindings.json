@@ -1,0 +1,18 @@
+﻿{
+  "Actions": {
+    "Exit": {
+      "Primary": [
+        "Escape"
+      ],
+      "Secondary": []
+    },
+    "ToggleDebug": {
+      "Primary": [
+        "LeftControl",
+        "LeftAlt",
+        "D"
+      ],
+      "Secondary": []
+    }
+  }
+}
