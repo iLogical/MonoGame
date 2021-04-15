@@ -26,18 +26,15 @@ namespace MonoGame.Input
             foreach (var (keysRequired, inputActionType) in _mappingActions)
             {
                 var overlap = e.PressedKeys.Where(x => keysRequired.Contains(x.Key)).ToArray();
-                if(overlap.Length != keysRequired.Count)
+                if (overlap.Length != keysRequired.Count || !_actions.TryGetValue(inputActionType, out var inputAction))
                     continue;
                 
-                if (_actions.TryGetValue(inputActionType, out var inputAction))
+                switch (inputAction.KeyPressType)
                 {
-                    switch (inputAction.KeyPressType)
-                    {
-                        case KeyPressType.Press when overlap.Any(x => x.Value):
-                        case KeyPressType.Hold:
-                            inputAction.Action();
-                            break;
-                    }
+                    case KeyPressType.Press when overlap.Any(x => x.Value):
+                    case KeyPressType.Hold:
+                        inputAction.Action();
+                        break;
                 }
             }
         }
@@ -45,8 +42,8 @@ namespace MonoGame.Input
         private static ImmutableDictionary<HashSet<Keys>, InputActionType> LoadActionMappings()
         {
             var builder = ImmutableDictionary.CreateBuilder<HashSet<Keys>, InputActionType>();
-            builder.Add(new HashSet<Keys>(new[] {Keys.LeftShift, Keys.Escape}), InputActionType.Exit);
-            builder.Add(new HashSet<Keys>(new[] {Keys.D}), InputActionType.ToggleDebug);
+            builder.Add(new HashSet<Keys>(new[] {Keys.Escape}), InputActionType.Exit);
+            builder.Add(new HashSet<Keys>(new[] {Keys.LeftControl, Keys.LeftAlt, Keys.D}), InputActionType.ToggleDebug);
             return builder.ToImmutable();
         }
         public void OnInputAction(InputActionType inputActionType, Action inputAction)

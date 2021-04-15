@@ -6,5 +6,8 @@ namespace MonoGame.Rendering
         public void DrawFrame(GameTime gameTime)
         {
         }
+        public void ToggleDebugMode()
+        {
+        }
     }
 }

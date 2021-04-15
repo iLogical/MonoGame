@@ -1,6 +1,5 @@
 ﻿namespace MonoGame.Rendering
 {
-
     public class SpriteBatch : Microsoft.Xna.Framework.Graphics.SpriteBatch, ISpriteBatch
     {
 
@@ -11,5 +10,4 @@
         {
         }
     }
-
 }

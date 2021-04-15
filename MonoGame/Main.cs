@@ -20,6 +20,7 @@ namespace MonoGame
         protected override void Initialize()
         {
             _inputManager.OnInputAction(InputActionType.Exit, Exit);
+            _inputManager.OnInputAction(InputActionType.ToggleDebug, _graphicsDevice.Renderer.ToggleDebugMode );
             base.Initialize();
         }
 
