@@ -11,18 +11,22 @@ using MonoGame.Config.Configurations;
 using Newtonsoft.Json;
 namespace MonoGame.Input
 {
-
+    public interface IInputManager
+    {
+        void OnInputAction(InputActionType inputActionType, Action inputAction);
+        void Update(GameTime gameTime);
+    }
     public class InputManager : IInputManager
     {
-        private readonly KeyboardInput _keyboardInput;
+        private readonly IKeyboardInput _keyboardInput;
         private readonly IDictionary<HashSet<Keys>, InputActionType> _mappingActions;
         private readonly IDictionary<InputActionType, InputAction> _actions;
 
-        public InputManager(ConfigurationManager configurationManage)
-        {
+        public InputManager(IConfigurationManager configurationManage, IKeyboardInput keyboardInput)
+        {            
+            _keyboardInput = keyboardInput;
             _mappingActions = LoadActionMappings(configurationManage);
             _actions = new Dictionary<InputActionType, InputAction>();
-            _keyboardInput = new KeyboardInput();
 
             _keyboardInput.KeyPressed += IsKeyPressed;
         }
@@ -43,7 +47,7 @@ namespace MonoGame.Input
                 }
             }
         }
-        private static IDictionary<HashSet<Keys>, InputActionType> LoadActionMappings(ConfigurationManager configurationManager)
+        private static IDictionary<HashSet<Keys>, InputActionType> LoadActionMappings(IConfigurationManager configurationManager)
         {            
             var builder = new Dictionary<HashSet<Keys>, InputActionType>();
             var loadedBindings = configurationManager.Load<KeyBindingConfiguration>("KeyBindings");

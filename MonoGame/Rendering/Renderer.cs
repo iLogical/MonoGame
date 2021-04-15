@@ -1,7 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 namespace MonoGame.Rendering
 {
-
+    public interface IRenderer
+    {
+        void DrawFrame(GameTime gameTime);
+        void ToggleDebugMode();
+    }
+    
     public class Renderer : IRenderer
     {
         private readonly Microsoft.Xna.Framework.Graphics.GraphicsDevice _graphicsDevice;

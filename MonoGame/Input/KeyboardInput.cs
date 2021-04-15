@@ -2,7 +2,13 @@
 using Microsoft.Xna.Framework.Input;
 namespace MonoGame.Input
 {
-    public class KeyboardInput
+    public interface IKeyboardInput
+    {
+        event EventHandler<KeyPressedArgs> KeyPressed;
+        void RefreshState();
+    }
+
+    public class KeyboardInput : IKeyboardInput
     {
         public event EventHandler<KeyPressedArgs> KeyPressed;
         private KeyboardState _state;

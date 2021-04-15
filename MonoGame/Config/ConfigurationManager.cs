@@ -2,7 +2,12 @@
 using Newtonsoft.Json;
 namespace MonoGame.Config
 {
-    public class ConfigurationManager
+    public interface IConfigurationManager
+    {
+        T Load<T>(string configName);
+    }
+
+    public class ConfigurationManager : IConfigurationManager
     {
         public T Load<T>(string configName)
         {

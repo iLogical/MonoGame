@@ -7,7 +7,7 @@ namespace MonoGame.Rendering
         public IRenderer Renderer { get; private set; }
         public ISpriteBatch SpriteBatch { get; private set; }
         
-        public GraphicsDevice(Game game)
+        public GraphicsDevice(Microsoft.Xna.Framework.Game game)
         {
             new GraphicsDeviceManager(game)
                 .DeviceCreated += GraphicsDeviceCreated;

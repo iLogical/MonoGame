@@ -1,19 +1,26 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using MonoGame.Config;
 using MonoGame.Input;
 using MonoGame.Rendering;
+using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace MonoGame
 {
-    public class Main : Game
+    public interface IGame : IDisposable
+    {
+        void Run();
+    }
+
+    public class Game : XnaGame, IGame
     {
         private readonly GraphicsDevice _graphicsDevice;
-        private readonly InputManager _inputManager;
+        private readonly IInputManager _inputManager;
 
-        public Main()
+        public Game(IInputManager inputManager)
         {
             _graphicsDevice = new GraphicsDevice(this);
-            _inputManager = new InputManager(new ConfigurationManager());
+            _inputManager = inputManager;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
