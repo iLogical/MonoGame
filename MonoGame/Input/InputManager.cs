@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 namespace MonoGame.Input
@@ -9,7 +10,7 @@ namespace MonoGame.Input
     public class InputManager : IInputManager
     {
         private readonly KeyboardInput _keyboardInput;
-        private readonly ImmutableDictionary<Keys, InputActionType> _mappingActions;
+        private readonly ImmutableDictionary<HashSet<Keys>, InputActionType> _mappingActions;
         private readonly IDictionary<InputActionType, InputAction> _actions;
 
         public InputManager()
@@ -22,23 +23,30 @@ namespace MonoGame.Input
         }
         private void IsKeyPressed(object sender, KeyPressedArgs e)
         {
-            if (!_mappingActions.TryGetValue(e.Key, out var inputActionType) || !_actions.TryGetValue(inputActionType, out var inputAction))
-                return;
-
-            switch (inputAction.KeyPressType)
+            foreach (var (keysRequired, inputActionType) in _mappingActions)
             {
-                case KeyPressType.Press when e.NewlyPressed:
-                case KeyPressType.Hold:
-                    inputAction.Action();
-                    break;
+                var overlap = e.PressedKeys.Where(x => keysRequired.Contains(x.Key)).ToArray();
+                if(overlap.Length != keysRequired.Count)
+                    continue;
+                
+                if (_actions.TryGetValue(inputActionType, out var inputAction))
+                {
+                    switch (inputAction.KeyPressType)
+                    {
+                        case KeyPressType.Press when overlap.Any(x => x.Value):
+                        case KeyPressType.Hold:
+                            inputAction.Action();
+                            break;
+                    }
+                }
             }
         }
 
-        private static ImmutableDictionary<Keys, InputActionType> LoadActionMappings()
+        private static ImmutableDictionary<HashSet<Keys>, InputActionType> LoadActionMappings()
         {
-            var builder = ImmutableDictionary.CreateBuilder<Keys, InputActionType>();
-            builder.Add(Keys.Escape, InputActionType.Exit);
-            builder.Add(Keys.D, InputActionType.ToggleDebug);
+            var builder = ImmutableDictionary.CreateBuilder<HashSet<Keys>, InputActionType>();
+            builder.Add(new HashSet<Keys>(new[] {Keys.LeftShift, Keys.Escape}), InputActionType.Exit);
+            builder.Add(new HashSet<Keys>(new[] {Keys.D}), InputActionType.ToggleDebug);
             return builder.ToImmutable();
         }
         public void OnInputAction(InputActionType inputActionType, Action inputAction)

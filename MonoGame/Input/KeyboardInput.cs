@@ -17,10 +17,13 @@ namespace MonoGame.Input
             _oldState = _state;
             _state = Keyboard.GetState();
 
-            foreach (var key in _state.GetPressedKeys())
+            var eventArgs = new KeyPressedArgs();
+            foreach (var pressedKey in _state.GetPressedKeys())
             {
-                KeyPressed?.Invoke(this, new KeyPressedArgs(key, _state[key] != _oldState[key]));
+                eventArgs.AddPressedKey(pressedKey, _oldState[pressedKey] == KeyState.Up);
             }
+
+            KeyPressed?.Invoke(this, eventArgs);
         }
     }
 }

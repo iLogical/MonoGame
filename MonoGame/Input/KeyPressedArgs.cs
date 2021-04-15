@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 namespace MonoGame.Input
 {
     public class KeyPressedArgs : EventArgs
     {
-        public Keys Key { get; }
-        public bool NewlyPressed { get; }
+        public Dictionary<Keys, bool> PressedKeys { get; }
 
-        public KeyPressedArgs(Keys key, bool newlyPressed = false)
+        public KeyPressedArgs()
         {
-            Key = key;
-            NewlyPressed = newlyPressed;
+            PressedKeys = new Dictionary<Keys, bool>();
+        }
+
+        public void AddPressedKey(Keys key, bool newlyPressed = false)
+        {
+            PressedKeys.Add(key, newlyPressed);
         }
     }
 }
