@@ -1,17 +1,31 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using MonoGame.Config.Configurations;
 using Newtonsoft.Json;
 namespace MonoGame.Config
 {
     public interface IConfigurationManager
     {
-        T Load<T>(string configName);
+        T Load<T>();
     }
 
     public class ConfigurationManager : IConfigurationManager
     {
-        public T Load<T>(string configName)
+        private readonly Dictionary<Type,string> _settingFileLocations;
+
+        public ConfigurationManager()
         {
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText($".//Config//{configName}.json"));
+            _settingFileLocations = new Dictionary<Type, string>
+            {
+                [typeof(DisplaySettingsConfiguration)] = ".//Config//DisplaySettings.json",
+                [typeof(KeyBindingConfiguration)] = ".//Config//KeyBindings.json"
+            };
+        }
+        
+        public T Load<T>()
+        {
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(_settingFileLocations[typeof(T)]));
         }
     }
 

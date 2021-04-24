@@ -9,11 +9,18 @@ namespace MonoGame
         public static ServiceProvider Build()
         {
             return new ServiceCollection()
-                .AddSingleton<IConfigurationManager, ConfigurationManager>()                
+                .AddDependencies()
+                .BuildServiceProvider();
+        }
+
+        private static IServiceCollection AddDependencies(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection
+                .AddSingleton<IConfigurationManager, ConfigurationManager>()
                 .AddSingleton<IKeyboardInput, KeyboardInput>()
                 .AddSingleton<IInputManager, InputManager>()
                 .AddSingleton<IRenderer, Renderer>()
-                .AddSingleton<IGame, Game>().BuildServiceProvider();
+                .AddSingleton<IGame, Game>();
         }
     }
 }

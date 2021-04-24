@@ -17,9 +17,9 @@ namespace MonoGame
         private readonly GraphicsDevice _graphicsDevice;
         private readonly IInputManager _inputManager;
 
-        public Game(IInputManager inputManager)
+        public Game(IInputManager inputManager, IConfigurationManager configurationManager)
         {
-            _graphicsDevice = new GraphicsDevice(this);
+            _graphicsDevice = new GraphicsDevice(this, configurationManager);
             _inputManager = inputManager;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

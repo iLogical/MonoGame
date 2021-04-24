@@ -50,7 +50,7 @@ namespace MonoGame.Input
         private static IDictionary<HashSet<Keys>, InputActionType> LoadActionMappings(IConfigurationManager configurationManager)
         {            
             var builder = new Dictionary<HashSet<Keys>, InputActionType>();
-            var loadedBindings = configurationManager.Load<KeyBindingConfiguration>("KeyBindings");
+            var loadedBindings = configurationManager.Load<KeyBindingConfiguration>();
             foreach (var (inputActionType, keyBinding) in loadedBindings.Actions)
             {
                 var primaryBindings = keyBinding.Primary.ToHashSet();

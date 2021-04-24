@@ -1,0 +1,11 @@
+﻿{
+  "Screen": {
+    "FullScreen": 0,
+    "FullScreenWidth": 1920,
+    "FullScreenHeight": 1080,
+    "WindowedWidth": 1280,
+    "WindowedHeight": 720,
+    "RefreshRate": 60,
+    "VSync": true
+  }
+}
