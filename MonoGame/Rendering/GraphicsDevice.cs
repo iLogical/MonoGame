@@ -22,7 +22,7 @@ namespace MonoGame.Rendering
             LoadSettings(game, configurationManager, graphicsDevice);
         }
 
-        private void LoadSettings(XnaGame game, IConfigurationManager configurationManager, GraphicsDeviceManager graphicsDeviceManager)
+        private static void LoadSettings(XnaGame game, IConfigurationManager configurationManager, GraphicsDeviceManager graphicsDeviceManager)
         {
             var graphicsSettings = configurationManager.Load<DisplaySettingsConfiguration>();
 
@@ -33,7 +33,12 @@ namespace MonoGame.Rendering
 
             graphicsDeviceManager.SynchronizeWithVerticalRetrace = graphicsSettings.Screen.VSync;
             if (!graphicsDeviceManager.SynchronizeWithVerticalRetrace)
-                game.TargetElapsedTime = new TimeSpan((long) (1000d / graphicsSettings.Screen.RefreshRate * 10000d));
+                game.TargetElapsedTime = CalculateFrameTime(graphicsSettings.Screen.RefreshRate);
+        }
+
+        private static TimeSpan CalculateFrameTime(double screenRefreshRate)
+        {
+            return new TimeSpan((long) (1000d / screenRefreshRate * 10000d));
         }
 
         private static void SetWindowed(DisplaySettingsConfiguration graphicsSettings, GraphicsDeviceManager graphicsDeviceManager)
