@@ -2,56 +2,52 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Config;
 using MonoGame.Config.Configurations;
+using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace MonoGame.Rendering
 {
     public class GraphicsDevice
     {
-        private readonly IConfigurationManager _configurationManager;
-        private readonly GraphicsDeviceManager _graphicsDevice;
-        private readonly Microsoft.Xna.Framework.Game _game;
         public IRenderer Renderer { get; private set; }
         public ISpriteBatch SpriteBatch { get; private set; }
 
-        public GraphicsDevice(Microsoft.Xna.Framework.Game game, IConfigurationManager configurationManager)
+        public GraphicsDevice(XnaGame game, IConfigurationManager configurationManager)
         {
-            _game = game;
-            _configurationManager = configurationManager;
-            _graphicsDevice = new GraphicsDeviceManager(_game);
-            _graphicsDevice.DeviceCreated += GraphicsDeviceCreated;
-
-            LoadSettings();
+            var graphicsDevice = new GraphicsDeviceManager(game);
+            graphicsDevice.DeviceCreated += GraphicsDeviceCreated;
 
             Renderer = new NoRenderer();
             SpriteBatch = new NoSpriteBatch();
+            
+            LoadSettings(game, configurationManager, graphicsDevice);
         }
 
-        private void LoadSettings()
+        private void LoadSettings(XnaGame game, IConfigurationManager configurationManager, GraphicsDeviceManager graphicsDeviceManager)
         {
-            var graphicsSettings = _configurationManager.Load<DisplaySettingsConfiguration>();
+            var graphicsSettings = configurationManager.Load<DisplaySettingsConfiguration>();
 
             if (graphicsSettings.Screen.FullScreen == DisplaySettingsConfiguration.ScreenSettings.FullscreenModes.Fullscreen)
-                SetFullscreen(graphicsSettings);
+                SetFullscreen(graphicsSettings, graphicsDeviceManager);
             else
-                SetWindowed(graphicsSettings);
+                SetWindowed(graphicsSettings, graphicsDeviceManager);
 
-            _graphicsDevice.SynchronizeWithVerticalRetrace = graphicsSettings.Screen.VSync;
-            if (!_graphicsDevice.SynchronizeWithVerticalRetrace)
-                _game.TargetElapsedTime = new TimeSpan((long) (1000d / graphicsSettings.Screen.RefreshRate * 10000d));
+            graphicsDeviceManager.SynchronizeWithVerticalRetrace = graphicsSettings.Screen.VSync;
+            if (!graphicsDeviceManager.SynchronizeWithVerticalRetrace)
+                game.TargetElapsedTime = new TimeSpan((long) (1000d / graphicsSettings.Screen.RefreshRate * 10000d));
         }
 
-        private void SetWindowed(DisplaySettingsConfiguration graphicsSettings)
+        private static void SetWindowed(DisplaySettingsConfiguration graphicsSettings, GraphicsDeviceManager graphicsDeviceManager)
         {
-            _graphicsDevice.IsFullScreen = false;
-            _graphicsDevice.PreferredBackBufferWidth = graphicsSettings.Screen.WindowedWidth;
-            _graphicsDevice.PreferredBackBufferHeight = graphicsSettings.Screen.WindowedHeight;
+            graphicsDeviceManager.IsFullScreen = false;
+            graphicsDeviceManager.PreferredBackBufferWidth = graphicsSettings.Screen.WindowedWidth;
+            graphicsDeviceManager.PreferredBackBufferHeight = graphicsSettings.Screen.WindowedHeight;
         }
 
-        private void SetFullscreen(DisplaySettingsConfiguration graphicsSettings)
+        private static void SetFullscreen(DisplaySettingsConfiguration graphicsSettings, GraphicsDeviceManager graphicsDeviceManager)
         {
-            _graphicsDevice.IsFullScreen = true;
-            _graphicsDevice.PreferredBackBufferWidth = graphicsSettings.Screen.FullScreenWidth;
-            _graphicsDevice.PreferredBackBufferHeight = graphicsSettings.Screen.FullScreenHeight;
+            graphicsDeviceManager.IsFullScreen = true;
+            graphicsDeviceManager.PreferredBackBufferWidth = graphicsSettings.Screen.FullScreenWidth;
+            graphicsDeviceManager.PreferredBackBufferHeight = graphicsSettings.Screen.FullScreenHeight;
         }
 
         private void GraphicsDeviceCreated(object sender, EventArgs e)
