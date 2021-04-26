@@ -1,15 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 namespace MonoGame.Rendering
 {
-    public class NoRenderer : IRenderer
+    public class NoComponentRenderer : IComponentRenderer
     {
         public ISpriteBatch SpriteBatch { get; }
 
-        public NoRenderer()
+        public NoComponentRenderer(ISpriteBatch spriteBatch)
         {
-            SpriteBatch = new NoSpriteBatch();            
+            SpriteBatch = spriteBatch;
         }
-        public void DrawFrame(GameTime gameTime)
+        public void DrawFrame(IEnumerable<ISprite> renderQueue)
         {
         }
         public void ToggleDebugMode()

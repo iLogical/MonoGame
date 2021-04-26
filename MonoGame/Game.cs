@@ -38,7 +38,7 @@ namespace MonoGame
         protected override void Initialize()
         {
             _contentManager.Initialize(this);
-            _sceneManager.Initialize(_contentManager, _graphicsDeviceManager.Renderer);
+            _sceneManager.Initialize(_contentManager);
             
             _inputManager.OnInputAction(InputActionType.Exit, Exit);
             _inputManager.OnInputAction(InputActionType.ToggleDebug, _graphicsDeviceManager.Renderer.ToggleDebugMode );
@@ -47,8 +47,10 @@ namespace MonoGame
 
         protected override void LoadContent()
         {
-            _sceneManager.Load("Test")
+            var scene = _sceneManager
+                .Load("Test")
                 .LoadContent();
+            _graphicsDeviceManager.Renderer.SetScene(scene);
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,7 +61,7 @@ namespace MonoGame
 
         protected override void Draw(GameTime gameTime)
         {
-            _graphicsDeviceManager.Renderer.DrawFrame(gameTime);
+            _graphicsDeviceManager.Renderer.DrawFrame();
             base.Draw(gameTime);
         }
     }

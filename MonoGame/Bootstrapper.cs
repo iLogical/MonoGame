@@ -33,7 +33,6 @@ namespace MonoGame
                 .AddSingleton<IInputManager, InputManager>()
                 .AddSingleton<IContentManager, ContentManager>()
                 .AddSingleton<ISceneManager, SceneManager>()
-                .AddSingleton<IRenderer, Renderer>()
                 .AddSingleton<IGame, Game>();
         }
     }

@@ -8,33 +8,31 @@ namespace MonoGame.Scene
 {
     public interface ISceneManager
     {
-        void Initialize(IContentManager contentManager, IRenderer renderer);
+        void Initialize(IContentManager contentManager);
         IScene Load(string sceneId);
     }
 
     public class SceneManager : ISceneManager
     {
-        private IRenderer _renderer;
         private Dictionary<string, Func<IScene>> _scenes;
-        public void Initialize(IContentManager contentManager, IRenderer renderer)
+        public void Initialize(IContentManager contentManager)
         {
-            _renderer = renderer;
             _scenes = new Dictionary<string, Func<IScene>>
             {
-                ["Test"] = () => new TestScene(contentManager, renderer)
+                ["Test"] = () => new TestScene(contentManager)
             };
         }
 
         public IScene Load(string sceneId)
         {
-            _renderer.ClearRenderQueue();
-            return _scenes[sceneId]();
+            var scene = _scenes[sceneId]();
+            return scene;
         }
     }
 
     public interface IScene
     {
-        void LoadContent();
+        IScene LoadContent();
+        List<ISprite> Components { get; }
     }
-
 }
