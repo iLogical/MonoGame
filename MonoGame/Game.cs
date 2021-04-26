@@ -2,8 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Config;
+using MonoGame.Content;
 using MonoGame.Input;
 using MonoGame.Rendering;
+using MonoGame.Scene;
+using ContentManager = Microsoft.Xna.Framework.Content.ContentManager;
 using GraphicsDevice = MonoGame.Rendering.GraphicsDevice;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
@@ -12,33 +15,40 @@ namespace MonoGame
     public interface IGame : IDisposable
     {
         void Run();
+        ContentManager Content { get; }
     }
 
     public class Game : XnaGame, IGame
     {
-        private readonly GraphicsDevice _graphicsDevice;
+        private readonly GraphicsDevice _graphicsDeviceManager;
         private readonly IInputManager _inputManager;
+        private readonly IContentManager _contentManager;
+        private readonly ISceneManager _sceneManager;
 
-        public Game(IInputManager inputManager, IConfigurationManager configurationManager)
+        public Game(IInputManager inputManager, IConfigurationManager configurationManager, IContentManager contentManager, ISceneManager sceneManager)
         {
-            _graphicsDevice = new GraphicsDevice(this, configurationManager);
+            _graphicsDeviceManager = new GraphicsDevice(this, configurationManager);
+            
+            _sceneManager = sceneManager;
             _inputManager = inputManager;
+            _contentManager = contentManager;
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
+            _contentManager.Initialize(this);
+            _sceneManager.Initialize(_contentManager, _graphicsDeviceManager.Renderer);
+            
             _inputManager.OnInputAction(InputActionType.Exit, Exit);
-            _inputManager.OnInputAction(InputActionType.ToggleDebug, _graphicsDevice.Renderer.ToggleDebugMode );
+            _inputManager.OnInputAction(InputActionType.ToggleDebug, _graphicsDeviceManager.Renderer.ToggleDebugMode );
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            var spriteFont = Content.Load<SpriteFont>("fonts//Arial");
-            var textSprite = new TextSprite {SpriteFont = spriteFont, Text = "Test", Color = Color.White, Position = Vector2.Zero};
-            _graphicsDevice.Renderer.AddToRenderQueue(textSprite);
+            _sceneManager.Load("Test")
+                .LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +59,7 @@ namespace MonoGame
 
         protected override void Draw(GameTime gameTime)
         {
-            _graphicsDevice.Renderer.DrawFrame(gameTime);
+            _graphicsDeviceManager.Renderer.DrawFrame(gameTime);
             base.Draw(gameTime);
         }
     }

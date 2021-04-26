@@ -7,7 +7,7 @@ namespace MonoGame.Rendering
 
         public NoRenderer()
         {
-            SpriteBatch = new NoSpriteBatch();
+            SpriteBatch = new NoSpriteBatch();            
         }
         public void DrawFrame(GameTime gameTime)
         {
@@ -16,6 +16,9 @@ namespace MonoGame.Rendering
         {
         }
         public void AddToRenderQueue<T>(T item) where T : ISprite
+        {
+        }
+        public void ClearRenderQueue()
         {
         }
     }

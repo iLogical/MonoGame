@@ -9,11 +9,12 @@ namespace MonoGame.Rendering
         void DrawFrame(GameTime gameTime);
         void ToggleDebugMode();
         void AddToRenderQueue<T>(T item) where T : ISprite;
+        void ClearRenderQueue();
     }
 
     public class Renderer : IRenderer
     {
-        private readonly IDictionary<Type, ISprite> _renderQueue;
+        private readonly HashSet<ISprite> _renderQueue;
         private readonly IDictionary<Type, Action<ISprite>> _renderers;
         private readonly Microsoft.Xna.Framework.Graphics.GraphicsDevice _graphicsDevice;
         private Color _clearColor;
@@ -28,7 +29,7 @@ namespace MonoGame.Rendering
                 [typeof(TextSprite)] = DrawString,
             };
             
-            _renderQueue = new Dictionary<Type, ISprite>();
+            _renderQueue = new HashSet<ISprite>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _clearColor = Color.CornflowerBlue;
             _debug = false;
@@ -44,16 +45,16 @@ namespace MonoGame.Rendering
         {
             _graphicsDevice.Clear(_clearColor);
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-            foreach (var (type, toRender) in _renderQueue)
+            foreach (var toRender in _renderQueue)
             {
-                _renderers[type](toRender);
+                _renderers[toRender.GetType()](toRender);
             }
             _spriteBatch.End();
         }
 
         public void AddToRenderQueue<T>(T item) where T : ISprite
         {
-            _renderQueue.Add(typeof(T), item);
+            _renderQueue.Add(item);
         }
 
         public void ClearRenderQueue()

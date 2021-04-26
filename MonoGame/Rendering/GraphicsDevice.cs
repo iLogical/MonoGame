@@ -28,7 +28,9 @@ namespace MonoGame.Rendering
                 SetFullscreen(graphicsSettings, graphicsDeviceManager);
             else
                 SetWindowed(graphicsSettings, graphicsDeviceManager);
-
+            
+            game.IsMouseVisible = true;
+            
             graphicsDeviceManager.SynchronizeWithVerticalRetrace = graphicsSettings.Screen.VSync;
             if (!graphicsDeviceManager.SynchronizeWithVerticalRetrace)
                 game.TargetElapsedTime = CalculateFrameTime(graphicsSettings.Screen.RefreshRate);

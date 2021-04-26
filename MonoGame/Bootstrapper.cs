@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MonoGame.Config;
+using MonoGame.Content;
 using MonoGame.Input;
 using MonoGame.Rendering;
+using MonoGame.Scene;
 namespace MonoGame
 {
     public static class Bootstrapper
@@ -29,6 +31,8 @@ namespace MonoGame
                 .AddSingleton<IConfigurationManager, ConfigurationManager>()
                 .AddSingleton<IKeyboardInput, KeyboardInput>()
                 .AddSingleton<IInputManager, InputManager>()
+                .AddSingleton<IContentManager, ContentManager>()
+                .AddSingleton<ISceneManager, SceneManager>()
                 .AddSingleton<IRenderer, Renderer>()
                 .AddSingleton<IGame, Game>();
         }
