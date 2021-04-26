@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Rendering.Renderers;
+using Color = Microsoft.Xna.Framework.Color;
 namespace MonoGame.Rendering
 {
     public interface IRenderer
@@ -15,22 +17,22 @@ namespace MonoGame.Rendering
     public class Renderer : IRenderer
     {
         private readonly HashSet<ISprite> _renderQueue;
-        private readonly IDictionary<Type, Action<ISprite>> _renderers;
+        private readonly IDictionary<Type, ISpriteRenderer> _renderers;
         private readonly Microsoft.Xna.Framework.Graphics.GraphicsDevice _graphicsDevice;
         private Color _clearColor;
         private bool _debug;
         private readonly SpriteBatch _spriteBatch;
+
         public Renderer(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphicsDevice)
         {
-            _graphicsDevice = graphicsDevice;            
-            _renderers = new Dictionary<Type, Action<ISprite>>
-            {
-                [typeof(ImageSprite)] = DrawSprite,
-                [typeof(TextSprite)] = DrawString,
-            };
-            
+            _graphicsDevice = graphicsDevice;
             _renderQueue = new HashSet<ISprite>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _renderers = new Dictionary<Type, ISpriteRenderer>
+            {
+                [typeof(ImageSprite)] = new SpriteRenderer(_spriteBatch), 
+                [typeof(TextSprite)] = new TextRenderer(_spriteBatch)
+            };
             _clearColor = Color.CornflowerBlue;
             _debug = false;
         }
@@ -45,9 +47,9 @@ namespace MonoGame.Rendering
         {
             _graphicsDevice.Clear(_clearColor);
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-            foreach (var toRender in _renderQueue)
+            foreach (var sprite in _renderQueue)
             {
-                _renderers[toRender.GetType()](toRender);
+                _renderers[sprite.GetType()].Render(sprite);
             }
             _spriteBatch.End();
         }
@@ -60,18 +62,6 @@ namespace MonoGame.Rendering
         public void ClearRenderQueue()
         {
             _renderQueue.Clear();
-        }
-
-        private void DrawSprite(ISprite o)
-        {
-            var toRender = (ImageSprite)o;
-            _spriteBatch.Draw(toRender.Texture, toRender.Position, toRender.Color);
-        }
-
-        private void DrawString(ISprite o)
-        {
-            var toRender = (TextSprite)o;
-            _spriteBatch.DrawString(toRender.SpriteFont, toRender.Text, toRender.Position, toRender.Color);
         }
     }
 }
