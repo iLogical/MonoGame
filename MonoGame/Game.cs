@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Config;
 using MonoGame.Input;
 using MonoGame.Rendering;
+using GraphicsDevice = MonoGame.Rendering.GraphicsDevice;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace MonoGame
@@ -34,6 +36,9 @@ namespace MonoGame
 
         protected override void LoadContent()
         {
+            var spriteFont = Content.Load<SpriteFont>("fonts//Arial");
+            var textSprite = new TextSprite {SpriteFont = spriteFont, Text = "Test", Color = Color.White, Position = Vector2.Zero};
+            _graphicsDevice.Renderer.AddToRenderQueue(textSprite);
         }
 
         protected override void Update(GameTime gameTime)

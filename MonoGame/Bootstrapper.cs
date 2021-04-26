@@ -4,13 +4,23 @@ using MonoGame.Input;
 using MonoGame.Rendering;
 namespace MonoGame
 {
-    public static class ServiceProviderManager
+    public static class Bootstrapper
     {
-        public static ServiceProvider Build()
+        public static IGame Run()
         {
-            return new ServiceCollection()
-                .AddDependencies()
-                .BuildServiceProvider();
+            return ServiceProviderManager
+                .Build()
+                .GetService<IGame>();
+        }
+
+        private static class ServiceProviderManager
+        {
+            public static ServiceProvider Build()
+            {
+                return new ServiceCollection()
+                    .AddDependencies()
+                    .BuildServiceProvider();
+            }
         }
 
         private static IServiceCollection AddDependencies(this IServiceCollection serviceCollection)

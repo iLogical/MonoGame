@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MonoGame
 {
@@ -8,8 +7,7 @@ namespace MonoGame
         [STAThread]
         private static void Main()
         {
-            var serviceProvider = ServiceProviderManager.Build();
-            using var game = serviceProvider.GetService<IGame>();
+            using var game = Bootstrapper.Run();
             game?.Run();
         }
     }

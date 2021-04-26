@@ -9,7 +9,6 @@ namespace MonoGame.Rendering
     public class GraphicsDevice
     {
         public IRenderer Renderer { get; private set; }
-        public ISpriteBatch SpriteBatch { get; private set; }
 
         public GraphicsDevice(XnaGame game, IConfigurationManager configurationManager)
         {
@@ -17,7 +16,6 @@ namespace MonoGame.Rendering
             graphicsDevice.DeviceCreated += GraphicsDeviceCreated;
 
             Renderer = new NoRenderer();
-            SpriteBatch = new NoSpriteBatch();
             
             LoadSettings(game, configurationManager, graphicsDevice);
         }
@@ -58,7 +56,6 @@ namespace MonoGame.Rendering
         private void GraphicsDeviceCreated(object sender, EventArgs e)
         {
             var graphicsDeviceManager = (GraphicsDeviceManager) sender;
-            SpriteBatch = new SpriteBatch(graphicsDeviceManager.GraphicsDevice);
             Renderer = new Renderer(graphicsDeviceManager.GraphicsDevice);
         }
     }
