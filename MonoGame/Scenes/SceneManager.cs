@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using MonoGame.Content;
 using MonoGame.Rendering;
-using MonoGame.Scene.Scenes;
-
-namespace MonoGame.Scene
+namespace MonoGame.Scenes
 {
     public interface ISceneManager
     {
@@ -19,7 +17,7 @@ namespace MonoGame.Scene
         {
             _scenes = new Dictionary<string, Func<IScene>>
             {
-                ["Test"] = () => new TestScene(contentManager)
+                ["Test"] = () => new Scene(contentManager)
             };
         }
 
@@ -32,7 +30,7 @@ namespace MonoGame.Scene
 
     public interface IScene
     {
-        IScene LoadContent();
+        IScene LoadContent(string value);
         List<ISprite> Components { get; }
     }
 }

@@ -5,7 +5,7 @@ using MonoGame.Config;
 using MonoGame.Content;
 using MonoGame.Input;
 using MonoGame.Rendering;
-using MonoGame.Scene;
+using MonoGame.Scenes;
 using ContentManager = Microsoft.Xna.Framework.Content.ContentManager;
 using GraphicsDevice = MonoGame.Rendering.GraphicsDevice;
 using XnaGame = Microsoft.Xna.Framework.Game;
@@ -49,7 +49,7 @@ namespace MonoGame
         {
             var scene = _sceneManager
                 .Load("Test")
-                .LoadContent();
+                .LoadContent("Test");
             _graphicsDeviceManager.Renderer.SetScene(scene);
         }
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Scene;
-using MonoGame.Scene.Scenes;
+using MonoGame.Scenes;
 
 namespace MonoGame.Rendering
 {
@@ -13,11 +12,11 @@ namespace MonoGame.Rendering
     }
 
     public class Renderer : IRenderer
-    {
+    {        
+        private readonly GraphicsDeviceManager _graphicsDevice;
         private readonly IComponentRenderer _componentRenderer;
         private readonly ISpriteBatch _spriteBatch;
         private IScene _currentScene;
-        private readonly GraphicsDeviceManager _graphicsDevice;
         private Color _clearColor;
         private bool _debug;
         
