@@ -4,21 +4,70 @@
       "Asset": "SmileyFace",
       "Color": {
         "B": 255,
-        "G": 255,
-        "R": 255,
+        "G": 0,
+        "R": 0,
         "A": 255
       },
       "Position": "0, 0",
+      "Scale": "1, 1",
+      "Depth": 0,
+      "Rotation": 0,
       "Parts": [
         {
           "Asset": "SmileyFace",
           "Color": {
             "B": 0,
-            "G": 0,
-            "R": 255,
+            "G": 255,
+            "R": 0,
             "A": 255
           },
-          "Position": "100, 100"
+          "Position": "200, 200",
+          "Scale": "1, 1",
+          "Depth": 0,
+          "Rotation": 0,
+          "Parts": [
+            {
+              "Asset": "SmileyFace",
+              "Color": {
+                "B": 0,
+                "G": 0,
+                "R": 255,
+                "A": 255
+              },
+              "Position": "100, 100",
+              "Scale": "0.5, 0.5",
+              "Depth": 0.1,
+              "Rotation": 90,
+              "Parts": [
+                {
+                  "Asset": "SmileyFace",
+                  "Color": {
+                    "B": 255,
+                    "G": 255,
+                    "R": 0,
+                    "A": 255
+                  },
+                  "Position": "100, 100",
+                  "Scale": "1, 1",
+                  "Depth": 0.1,
+                  "Rotation": 0
+                },
+                {
+                  "Asset": "SmileyFace",
+                  "Color": {
+                    "B": 0,
+                    "G": 255,
+                    "R": 255,
+                    "A": 255
+                  },
+                  "Position": "0, 0",
+                  "Scale": "1.5, 1",
+                  "Depth": 0,
+                  "Rotation": 90
+                }
+              ]
+            }
+          ]
         }
       ]
     }

@@ -23,9 +23,7 @@ namespace MonoGame.Rendering
         public void DrawFrame(IEnumerable<ISprite> renderQueue)
         {
             foreach (var sprite in renderQueue)
-            {
                 _renderers[sprite.GetType()].Render(sprite);
-            }
         }
     }
 }

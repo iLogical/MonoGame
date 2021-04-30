@@ -25,7 +25,11 @@ namespace MonoGame.Scenes
             public string Asset { get; init; }
             public Color Color { get; init; }
             public Vector2 Position { get; init; }
+            public Vector2 Scale { get; init; }
+            public float Depth { get; init; }
             public List<SpriteData> Parts { get; }
+            public float Rotation { get; init; }
+
             protected SpriteData()
             {
                 Parts = new List<SpriteData>();

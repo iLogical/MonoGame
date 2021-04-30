@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Content;
 using MonoGame.Rendering;
@@ -23,7 +24,7 @@ namespace MonoGame.Scenes
             var sceneJson = JsonConvert.DeserializeObject<SceneInfo>(File.ReadAllText($"Scenes//{value}.json"));
             if (sceneJson.IsNull())
                 return this;
-            
+
             Components.AddRange(Load(sceneJson!.Text));
             Components.AddRange(Load(sceneJson!.Sprites));
             return this;
@@ -34,10 +35,8 @@ namespace MonoGame.Scenes
         }
         private TextSprite DataToModel(SceneInfo.TextData textObject)
         {
-            return new()
+            return new(_contentManager.Load<SpriteFont>($"fonts//{textObject.Asset}"), textObject.Value)
             {
-                SpriteFont = _contentManager.Load<SpriteFont>($"fonts//{textObject.Asset}"), 
-                Text = textObject.Value, 
                 Color = textObject.Color, 
                 Position = textObject.Position
             };
@@ -49,13 +48,14 @@ namespace MonoGame.Scenes
         }
         private ImageSprite DataToModel(SceneInfo.SpriteData spriteObject)
         {
-            return new()
+            return new ImageSprite(_contentManager.Load<Texture2D>($"sprites//{spriteObject.Asset}"))
             {
-                Texture = _contentManager.Load<Texture2D>($"sprites//{spriteObject.Asset}"), 
                 Color = spriteObject.Color, 
-                Position = spriteObject.Position, 
-                Parts = Load(spriteObject.Parts)
-            };
+                LocalPosition = spriteObject.Position,
+                LocalScale = spriteObject.Scale,
+                LocalDepth = spriteObject.Depth,
+                LocalRotation = MathHelper.ToRadians(spriteObject.Rotation)
+            }.AddParts(Load(spriteObject.Parts));
         }
     }
 }

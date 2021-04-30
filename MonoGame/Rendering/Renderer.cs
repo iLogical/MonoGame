@@ -38,7 +38,7 @@ namespace MonoGame.Rendering
         public void DrawFrame()
         {
             _graphicsDevice.GraphicsDevice.Clear(_clearColor);
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
             _componentRenderer.DrawFrame(_currentScene.Components);
             _spriteBatch.End();
         }
