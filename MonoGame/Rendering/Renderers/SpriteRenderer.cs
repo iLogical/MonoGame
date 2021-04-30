@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-namespace MonoGame.Rendering.Renderers
+﻿namespace MonoGame.Rendering.Renderers
 {
     public class SpriteRenderer : ISpriteRenderer
     {
@@ -11,16 +10,13 @@ namespace MonoGame.Rendering.Renderers
         public void Render(ISprite o)
         {
             var toRender = (ImageSprite)o;
-            Render(toRender, Vector2.Zero);
+            Render(toRender, new ImageSprite());
         }
-        private void Render(ImageSprite o, Vector2 worldPosition)
+        private void Render(ImageSprite o, ImageSprite p)
         {
-            _spriteBatch.Draw(o.Texture, o.Position, o.Color);
+            _spriteBatch.Draw(o.Texture, p.Position + o.Position, o.Color);
             foreach (var child in o.Parts)
-            {
-                var position = worldPosition += child.Position;
-                Render(child, position);
-            }
+                Render(child, p);
         }
     }
 }

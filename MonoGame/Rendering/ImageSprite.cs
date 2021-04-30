@@ -13,6 +13,7 @@ namespace MonoGame.Rendering
         public ImageSprite()
         {
             Parts = new List<ImageSprite>();
+            Position = Vector2.Zero;
         }
     }
 }
