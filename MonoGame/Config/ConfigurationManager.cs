@@ -28,5 +28,4 @@ namespace MonoGame.Config
             return JsonConvert.DeserializeObject<T>(File.ReadAllText(_settingFileLocations[typeof(T)]));
         }
     }
-
 }

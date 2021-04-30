@@ -48,8 +48,7 @@ namespace MonoGame
         protected override void LoadContent()
         {
             var scene = _sceneManager
-                .Load("Test")
-                .LoadContent("Test");
+                .Load("Test");
             _graphicsDeviceManager.Renderer.SetScene(scene);
         }
 

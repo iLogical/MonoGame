@@ -1,5 +1,16 @@
 ﻿{
-  "Sprites": [],
+  "Sprites": [
+    {
+      "Asset": "SmileyFace",
+      "Color": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255
+      },
+      "Position": "0, 0"
+    }
+  ],
   "Text": [
     {
       "Asset": "Arial",
@@ -21,7 +32,7 @@
         "R": 0,
         "A": 255
       },
-      "Position": "400, 300"
+      "Position": "1240, 700"
     }
   ]
 }

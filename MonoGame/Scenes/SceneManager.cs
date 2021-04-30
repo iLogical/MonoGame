@@ -12,25 +12,20 @@ namespace MonoGame.Scenes
 
     public class SceneManager : ISceneManager
     {
-        private Dictionary<string, Func<IScene>> _scenes;
+        private IContentManager _contentManager;
         public void Initialize(IContentManager contentManager)
         {
-            _scenes = new Dictionary<string, Func<IScene>>
-            {
-                ["Test"] = () => new Scene(contentManager)
-            };
+            _contentManager = contentManager;
         }
 
         public IScene Load(string sceneId)
         {
-            var scene = _scenes[sceneId]();
-            return scene;
+            return new Scene(_contentManager).LoadContent(sceneId);
         }
     }
 
     public interface IScene
     {
-        IScene LoadContent(string value);
         List<ISprite> Components { get; }
     }
 }

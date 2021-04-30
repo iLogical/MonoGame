@@ -41,7 +41,7 @@ namespace MonoGame.Scenes
             if (sceneJson.IsNull())
                 return this;
             
-            foreach (var textObject in sceneJson.Text.GroupBy(x => x.Asset))
+            foreach (var textObject in sceneJson!.Text.GroupBy(x => x.Asset))
             {
                 
                 var spriteFont = _contentManager.Load<SpriteFont>($"fonts//{textObject.Key}");
@@ -50,19 +50,36 @@ namespace MonoGame.Scenes
                     Components.Add(new TextSprite{ SpriteFont =  spriteFont, Text = data.Value, Color = data.Color, Position = data.Position});
                 }
             }
+            
+            foreach (var spriteObject in sceneJson.Sprites.GroupBy(x => x.Asset))
+            {
+                
+                var texture2D = _contentManager.Load<Texture2D>($"sprites//{spriteObject.Key}");
+                foreach (var data in spriteObject)
+                {
+                    Components.Add(new ImageSprite{ Texture =  texture2D, Color = data.Color, Position = data.Position});
+                }
+            }
             return this;
         }
 
         public class SceneInfo
         {
-            public List<TextData> Text { get; set; }
+            public List<TextData> Text { get; init; }
+            public List<SpriteData> Sprites { get; init; }
 
             public class TextData
             {
-                public string Asset { get; set; }
-                public string Value { get; set; }
-                public Color Color { get; set; }
-                public Vector2 Position { get; set; }
+                public string Asset { get; init; }
+                public string Value { get; init; }
+                public Color Color { get; init; }
+                public Vector2 Position { get; init; }
+            }
+            public class SpriteData
+            {
+                public string Asset { get; init; }
+                public Color Color { get; init; }
+                public Vector2 Position { get; init; }
             }
         }
     }
