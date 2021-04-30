@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MonoGame.Content;
 using MonoGame.Rendering;
 namespace MonoGame.Scenes

@@ -4,9 +4,9 @@ namespace MonoGame.Rendering
 {
     public class TextSprite : ISprite
     {
-        public SpriteFont SpriteFont { get; set; }
-        public string Text { get; set; }
-        public Vector2 Position { get; set; }
-        public Color Color { get; set; }
+        public SpriteFont SpriteFont { get; init; }
+        public string Text { get; init; }
+        public Vector2 Position { get; init; }
+        public Color Color { get; init; }
     }
 }

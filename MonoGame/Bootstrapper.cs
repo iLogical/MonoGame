@@ -2,7 +2,6 @@
 using MonoGame.Config;
 using MonoGame.Content;
 using MonoGame.Input;
-using MonoGame.Rendering;
 using MonoGame.Scenes;
 namespace MonoGame
 {

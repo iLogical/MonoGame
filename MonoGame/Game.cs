@@ -1,10 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Config;
 using MonoGame.Content;
 using MonoGame.Input;
-using MonoGame.Rendering;
 using MonoGame.Scenes;
 using ContentManager = Microsoft.Xna.Framework.Content.ContentManager;
 using GraphicsDevice = MonoGame.Rendering.GraphicsDevice;

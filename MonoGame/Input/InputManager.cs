@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Config;
 using MonoGame.Config.Configurations;
-using Newtonsoft.Json;
 namespace MonoGame.Input
 {
     public interface IInputManager
